@@ -32,8 +32,9 @@ public interface IGlobalCapabilitiesMA extends INBTSerializable<CompoundTag> {
 
     //AutoLife
 
-    boolean setAutoLifeActive();
-    boolean getAutoLifeActive();
+    int setAutoLifeActive(int i);
+    int getAutoLifeActive();
+    void remAutoLifeActive(int use);
 
     void deserializeNBT();
 }
