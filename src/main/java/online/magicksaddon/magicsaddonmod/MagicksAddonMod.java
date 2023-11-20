@@ -3,6 +3,7 @@ package online.magicksaddon.magicsaddonmod;
 import java.util.List;
 import java.util.function.Supplier;
 
+import online.magicksaddon.magicsaddonmod.shotlock.AddonShotlocks;
 import org.slf4j.Logger;
 
 import com.google.common.base.Suppliers;
@@ -98,6 +99,7 @@ public class MagicksAddonMod
         ModEntitiesMA.ENTITIES.register(modEventBus);
         AddonAbilities.ABILITIES.register(modEventBus);
         AddonForms.DRIVE_FORMS.register(modEventBus);
+        AddonShotlocks.SHOTLOCKS.register(modEventBus);
 		modEventBus.addListener(this::creativeTabRegistry);
 
 
