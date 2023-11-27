@@ -29,10 +29,7 @@ public interface IGlobalCapabilitiesMA extends INBTSerializable<CompoundTag> {
     int getBerserkTicks();
     void setBerserkTicks(int i, int level);
     void remBerserkTicks(int ticks);
-
-    void setBerserkModelTicks(int berserkTicks);
-    int getBerserkModelTicks();
-
+    
     //AutoLife
     int setAutoLifeActive(int i);
     int getAutoLifeActive();
