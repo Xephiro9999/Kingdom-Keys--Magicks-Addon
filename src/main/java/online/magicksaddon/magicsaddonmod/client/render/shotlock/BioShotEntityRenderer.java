@@ -1,7 +1,8 @@
 package online.magicksaddon.magicsaddonmod.client.render.shotlock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+//import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,6 +20,7 @@ import java.awt.*;
 @OnlyIn(Dist.CLIENT)
 public class BioShotEntityRenderer extends EntityRenderer<BaseShotlockShotEntity> {
     private CubeModel model;
+    private Vector3f Axis;
 
     public BioShotEntityRenderer(EntityRendererProvider.Context context) {
         super(context);

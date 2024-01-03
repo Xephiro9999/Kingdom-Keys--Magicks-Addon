@@ -2,7 +2,8 @@ package online.magicksaddon.magicsaddonmod.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+//import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -30,6 +31,7 @@ public class BerserkLayerRenderer<T extends LivingEntity> extends RenderLayer<T,
     public static final ResourceLocation TEXTURE = new ResourceLocation(MagicksAddonMod.MODID,"textures/entity/models/berserk1.png");
     public static final String BOX = "box";
     private final ModelPart box;
+    private Vector3f Axis;
 
     public BerserkLayerRenderer(RenderLayerParent<T, PlayerModel<T>> p_174540_, EntityModelSet p_174541_) {
         super(p_174540_);

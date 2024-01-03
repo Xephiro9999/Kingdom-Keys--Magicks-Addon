@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -59,20 +58,7 @@ public class MagicksAddonMod {
     // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
-    @SubscribeEvent
-	public void creativeTabRegistry(CreativeModeTabEvent.Register event) {
-		final List<ItemStack> kkItems = ModItemsMA.ITEMS.getEntries().stream().map(RegistryObject::get).map(ItemStack::new).toList();
-		final Supplier<List<ItemStack>> misc = Suppliers.memoize(() -> kkItems.stream().filter(item -> !(item.getItem() instanceof KeybladeItem) && !(item.getItem() instanceof IOrgWeapon) && !(item.getItem() instanceof KeychainItem)).toList());
 
-		event.registerCreativeModeTab(new ResourceLocation(MODID, "magicksaddontab"), builder -> {
-			builder
-				.title(Component.translatable("itemGroup.magicksaddontab"))
-				.icon(() -> new ItemStack(ModItemsMA.hasteSpell.get()))
-				.displayItems(((params, output) -> {
-					misc.get().forEach(output::accept);
-				}));
-		});
-	}
 
     
     public MagicksAddonMod(){
@@ -97,7 +83,6 @@ public class MagicksAddonMod {
         AddonForms.DRIVE_FORMS.register(modEventBus);
         AddonShotlocks.SHOTLOCKS.register(modEventBus);
         modEventBus.addListener(this::setup);
-		modEventBus.addListener(this::creativeTabRegistry);
 
     }
     
