@@ -36,7 +36,7 @@ import online.magicksaddon.magicsaddonmod.magic.ModMagicks;
 public class MagicksAddonMod {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "magicksaddon";
-    public static final String MODNAME = "Magicks Addon Mod";
+    public static final String MODNAME = "Kingdom Keys - Re:Mind";
     public static final String MODVER = "0.7a";
     public static final String MCVER = "1.19.2";
     // Directly reference a slf4j logger
