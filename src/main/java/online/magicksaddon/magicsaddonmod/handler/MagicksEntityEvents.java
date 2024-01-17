@@ -29,24 +29,6 @@ public class MagicksEntityEvents {
 	public void onJoin(PlayerLoggedInEvent e){
 		Player player = e.getEntity();
 		IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-
-
-		// Shotlocks Gain (Temp)
-		if (playerData.getLevel() >= 1){
-			playerData.addShotlockToList(MagicksAddonMod.MODID+":"+ StringsX.flameSalvo, true);
-			playerData.addShotlockToList(MagicksAddonMod.MODID+":"+ StringsX.bubbleBlaster, true);
-		}
-		if (playerData.getLevel() >= 25){
-			playerData.addShotlockToList(MagicksAddonMod.MODID+":"+ StringsX.thunderStorm, true);
-			playerData.addShotlockToList(MagicksAddonMod.MODID+":"+ StringsX.bioBarrage, true);
-		}
-		if (playerData.getLevel() >= 50){
-			playerData.addShotlockToList(MagicksAddonMod.MODID+":"+ StringsX.meteorShower, true);
-		}
-
-
-
-
 			//if (playerData.getSoAState() == SoAState.COMPLETE){
 				/*
 				playerData.setDriveFormLevel(MagicksAddonMod.MODID+":"+ StringsX.darkMode, 1);
@@ -94,7 +76,7 @@ public class MagicksEntityEvents {
 				playerData.setDriveFormLevel(formName, 1); //We give the form to the player
 				if(globalData.getDarkModeEXP() > 0) { //If we have some amount of exp stored in the new capability give it to the KK form so it properly gets leveled up
 					playerData.setDriveFormExp(player, formName, formEXP);
-					System.out.println("Leveled dark form with "+formEXP+"xp points");
+					//System.out.println("Leveled dark form with "+formEXP+"xp points");
 				}
 			}
 		} else { // If ability to use dark form is NOT equipped
@@ -114,8 +96,11 @@ public class MagicksEntityEvents {
 			if(playerData != null && globalData != null) {
 
 				updateDriveAbilities(player, StringsX.darkPower, MagicksAddonMod.MODID+":"+ StringsX.darkMode, globalData.getDarkModeEXP());
-				//updateDriveAbilities(player, StringsX.rageAwakened, MagicksAddonMod.MODID+":"+ StringsX.rageForm, globalData.getRageModeEXP());
+				//TODO uncomment this 
+				// updateDriveAbilities(player, StringsX.rageAwakened, MagicksAddonMod.MODID+":"+ StringsX.rageForm, globalData.getRageModeEXP());
 				updateDriveAbilities(player, StringsX.wayToLight, MagicksAddonMod.MODID+":"+ StringsX.light, globalData.getLightFormEXP());
+				//TODO Remove this line when Rage Form can get EXP
+				updateDriveAbilities(player, StringsX.rageAwakened, MagicksAddonMod.MODID+":"+ StringsX.rageForm, 0);
 
 				// Additional Forms Here
 				// Light/Darkness Within
@@ -128,27 +113,20 @@ public class MagicksEntityEvents {
 				if (playerData.isAbilityEquipped(StringsX.lightWithin)) {
 					playerData.getStrengthStat().addModifier("light_within", lightWithinBoost, false);
 					playerData.getMagicStat().addModifier("light_within", lightWithinBoost, false);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				} else {
 					playerData.getStrengthStat().removeModifier("light_within");
 					playerData.getMagicStat().removeModifier("light_within");
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
 				if (playerData.isAbilityEquipped(StringsX.darknessWithin)){
 					playerData.getStrengthStat().addModifier("darkness_within", darknessWithinBoost, false);
 					playerData.getMagicStat().addModifier("darkness_within", darknessWithinBoost, false);
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				} else {
 					playerData.getStrengthStat().removeModifier("darkness_within");
 					playerData.getMagicStat().removeModifier("darkness_within");
-					PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 				}
-
 			}
 
 		}
-
-		//globalData.setBerserkTicks(100, 0);
 
 		if (globalData != null) {
 			// Spells go Down Below
@@ -159,11 +137,11 @@ public class MagicksEntityEvents {
 					if(event.getEntity() instanceof Player player) {
 						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
 						if (playerData.isAbilityEquipped(StringsX.darkStep) || playerData.getActiveDriveForm().equals("magicksaddon:form_dark")) {
-							player.level.playSound(null, player.blockPosition(), MagicSounds.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
+							player.level().playSound(null, player.blockPosition(), MagicSounds.DARKSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 						}
 						if (playerData.isAbilityEquipped(StringsX.lightStep) || playerData.getActiveDriveForm().equals("magicksaddon:form_light")) {
 							//System.out.println(player.level.isClientSide);
-							player.level.playSound(null, player.blockPosition(), MagicSounds.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
+							player.level().playSound(null, player.blockPosition(), MagicSounds.LIGHTSTEP2.get(), SoundSource.PLAYERS, 1F, 1F);
 						}
 					}
 				}
@@ -197,11 +175,12 @@ public class MagicksEntityEvents {
 				if (globalData.getBerserkTicks() > 0) {
 					globalData.remBerserkTicks(1);
 					//System.out.println("Berserk Level: " + globalData.getBerserkLevel() + " " + "Berserk Ticks Remaining: " + globalData.getBerserkTicks());
-					if(!event.getEntity().level.isClientSide) {
-						if (globalData.getBerserkTicks() <= 0) {
-							IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
-							playerData.getStrengthStat().removeModifier("berserk");
-							playerData.getDefenseStat().removeModifier("berserk");
+					if (globalData.getBerserkTicks() <= 0) {
+						IPlayerCapabilities playerData = ModCapabilities.getPlayer(player);
+						playerData.getStrengthStat().removeModifier("berserk");
+						playerData.getDefenseStat().removeModifier("berserk");
+						if(!event.getEntity().level().isClientSide) {
+							//I think you might not need this one I commented
 							PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player); //Sync KK stat packet
 							PacketHandlerX.syncGlobalToAllAround((Player) event.getEntity(), (IGlobalCapabilitiesX) globalData);
 						}
@@ -224,7 +203,7 @@ public class MagicksEntityEvents {
 								playerData.addMP(0.5 * mpWalkerMult);
 							}
 						}
-						if (!player.level.isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsX.expWalker)) {
+						if (!player.level().isClientSide && player.tickCount % 20 == 0 && playerData.isAbilityEquipped(StringsX.expWalker)) {
 							playerData.addExperience(player, 1, false, true);
 						}
 					}
@@ -247,7 +226,7 @@ public class MagicksEntityEvents {
 					globalData.remAutoLifeActive(1);
 					player.removeAllEffects();
 					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 10));
-					player.level.playSound(null, player.blockPosition(), MagicSounds.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
+					player.level().playSound(null, player.blockPosition(), MagicSounds.AUTOLIFE.get(), SoundSource.PLAYERS, 1F, 1F);
 				}
 			}
 		}
@@ -278,6 +257,8 @@ public class MagicksEntityEvents {
 				}
 			}
 			if (player.getHealth() + 1 >= player.getMaxHealth() / 4) {
+				playerData.getStrengthStat().removeModifier("adrenaline");
+				playerData.getMagicStat().removeModifier("critical_surge");
 				PacketHandler.sendTo(new SCSyncCapabilityPacket(playerData), (ServerPlayer) player);
 			}
 
