@@ -1,6 +1,5 @@
 ## __8.26.3f__
 
-
 ### General Changes
 
 - **[EFM]** Attack Command Animations now play again.
@@ -43,10 +42,10 @@
   - Base Stats: 8/10
   - Base Ability: MP Walker
 - Entropy's Requiem, commissioned by ConstellationDragon
-  - Description: 
+  - Description: This keyblade glimmered into existence upon the shattering of Ragnarök's Requiem, a blade forged tenaciously by a blacksmith, and the freeing weight of its wielder when he was finally liberated from the burdens of his inner Darkness. It strives to show him the Freedom within the Stars.
   - Base Stats: 10/10
   - Base Ability: **NEW** Silence Heart
-  - Custom Form: 
+  - Custom Form: Draconic Liberation
 - Maddening Corruption, commissioned by TheFeralKitsune
   - Description: 
   - Base Stats: 13/6
